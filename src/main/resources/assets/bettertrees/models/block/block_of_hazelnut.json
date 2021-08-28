@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "bettertrees:block/block_of_hazelnut"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "bettertrees:block/hazelnut_leaves"
+  }
+}

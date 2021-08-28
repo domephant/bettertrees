@@ -1,0 +1,13 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "bettertrees:block_of_hazelnut"
+        }
+    ],
+    "result":
+    {
+        "item": "bettertrees:hazelnut",
+        "count": 9
+    }
+}

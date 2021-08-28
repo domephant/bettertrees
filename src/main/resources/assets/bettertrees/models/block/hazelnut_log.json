@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "bettertrees:block/hazelnut_log_top",
+    "side": "bettertrees:block/hazelnut_log"
+  }
+}

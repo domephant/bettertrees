@@ -1,0 +1,13 @@
+{
+  "itemGroup.bettertrees.betterTreesTab": "BetterTrees",
+
+  "item.bettertrees.hazelnut": "Hazelnut",
+  "item.bettertrees.peeled_hazelnut": "Peeled Hazelnut",
+  "item.bettertrees.roasted_hazelnut": "Roasted Hazelnut",
+
+  "item.bettertrees.nutcracker": "Nutcracker",
+
+  "block.bettertrees.block_of_hazelnut": "Block of Hazelnut",
+  "block.bettertrees.hazelnut_log": "Hazelnut log",
+  "block.bettertrees.hazelnut_leaves": "Hazelnut leaves"
+}

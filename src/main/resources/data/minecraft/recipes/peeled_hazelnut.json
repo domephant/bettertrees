@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "bettertrees:hazelnut"
+        },
+        {
+            "item": "bettertrees:nutcracker"
+        }
+    ],
+    "result":
+        {
+            "item": "bettertrees:peeled_hazelnut"
+        }
+}

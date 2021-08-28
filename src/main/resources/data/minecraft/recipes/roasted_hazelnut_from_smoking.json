@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "bettertrees:peeled_hazelnut"
+    },
+    "result": "bettertrees:roasted_hazelnut",
+    "experience": 0.3,
+    "cookingTime": 10
+}
