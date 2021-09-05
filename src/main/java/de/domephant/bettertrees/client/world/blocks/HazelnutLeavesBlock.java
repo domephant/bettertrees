@@ -17,8 +17,6 @@ public class HazelnutLeavesBlock extends LeavesBlock {
 
     public HazelnutLeavesBlock(MaterialColor color, SoundType sound) {
         super(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(sound).noOcclusion().isSuffocating(HazelnutLeavesBlock::never).isViewBlocking(HazelnutLeavesBlock::never));
-        FMLJavaModLoadingContext.get().getModEventBus().register(new BlockColorRegisterHandler());
-        FMLJavaModLoadingContext.get().getModEventBus().register(new ItemColorRegisterHandler());
     }
 
     private static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {

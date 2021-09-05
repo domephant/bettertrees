@@ -1,62 +1,54 @@
 package de.domephant.bettertrees.client.events;
 
-import de.domephant.bettertrees.client.Main;
+import de.domephant.bettertrees.Main;
 
+import de.domephant.bettertrees.client.entity.render.WhaleEntityRenderer;
+import de.domephant.bettertrees.client.entity.model.WhaleEntityModel;
+import de.domephant.bettertrees.client.modellayers.CustomModelLayers;
 import de.domephant.bettertrees.client.world.blocks.HazelnutLeavesBlock;
 import de.domephant.bettertrees.client.world.blocks.HazelnutLogBlock;
 import de.domephant.bettertrees.client.world.blocks.ItemBlock;
 import de.domephant.bettertrees.client.tabs.BetterTreesTab;
 import de.domephant.bettertrees.client.world.item.LeavesItem;
 import de.domephant.bettertrees.client.world.item.NutcrackerItem;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.resources.sounds.Sound;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import de.domephant.bettertrees.common.entity.WhaleEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.ColorResolver;
-import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.lighting.LevelLightEngine;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.world.level.block.LeavesBlock;
 
-import javax.annotation.Nullable;
-
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryEvents {
-    //Requirements
+    //#region Requirements
     public static final Logger LOGGER = Main.LOGGER;
     public static final String MOD_ID = Main.MOD_ID;
+    //#endregion
 
-    //CreativeModeTab
+    //#region CreativeModeTab
     public static final CreativeModeTab BETTER_TREES_TAB = new BetterTreesTab("betterTreesTab");
+    //#endregion
 
-
-    //Blocks
+    //#region Blocks
     public static final ItemBlock BLOCK_OF_HAZELNUT = new ItemBlock(MaterialColor.STONE, SoundType.WART_BLOCK);
     public static final HazelnutLogBlock HAZELNUT_LOG = new HazelnutLogBlock(MaterialColor.WOOD, SoundType.WOOD);
     public static final HazelnutLeavesBlock HAZELNUT_LEAVES = new HazelnutLeavesBlock(MaterialColor.COLOR_GREEN, SoundType.GRASS);
+    //#endregion
 
-    //Items
+    //#region Items
     //Food
     public static final Item ROASTED_HAZELNUT = new Item(new Item.Properties().tab(BETTER_TREES_TAB).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.4F).alwaysEat().fast().build()));
     public static final Item HAZELNUT = new Item(new Item.Properties().tab(BETTER_TREES_TAB).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.2F).effect(new MobEffectInstance(MobEffects.HUNGER, 200, 10),1f).alwaysEat().fast().build()));
@@ -65,9 +57,13 @@ public class RegistryEvents {
     public static final Item HAZELNUT_LOG_item = new BlockItem(RegistryEvents.HAZELNUT_LOG, new Item.Properties().tab(BETTER_TREES_TAB));
     public static final Item HAZELNUT_LEAVES_item = new LeavesItem(RegistryEvents.HAZELNUT_LEAVES, BETTER_TREES_TAB);
 
-
     //Tools
     public static final NutcrackerItem NUTCRACKER = new NutcrackerItem(new Item.Properties().tab(BETTER_TREES_TAB));
+    //#endregion
+
+    //#region Entities
+    public static final EntityType<WhaleEntity> WHALEENTITY = EntityType.Builder.of(WhaleEntity::new, MobCategory.WATER_CREATURE).sized(0.6F, 1.95F).build("bettertrees.whale");
+    //endregion
 
     @SubscribeEvent
     public static void registerItems(final RegistryEvent.Register<Item> event){
@@ -89,27 +85,48 @@ public class RegistryEvents {
         register(HAZELNUT_LEAVES, registry, "hazelnut_leaves");
     }
 
-    public static void register(Item item, IForgeRegistry<Item> registry, String locationName) {
+    @SubscribeEvent
+    public static void registerEntity(RegistryEvent.Register<EntityType<?>> event) {
+        event.getRegistry().register(WHALEENTITY.setRegistryName("whale"));
+    }
+
+    @SubscribeEvent
+    public static void registerEntityAttribute(EntityAttributeCreationEvent event) {
+        event.put(WHALEENTITY, WhaleEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(RegistryEvents.WHALEENTITY, WhaleEntityRenderer::new);
+    }
+    @SubscribeEvent
+    public static void registerLayerDefinition(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(CustomModelLayers.WHALEENTITY, WhaleEntityModel::createBodyLayer);
+    }
+
+
+
+    private static void register(Item item, IForgeRegistry<Item> registry, String locationName) {
         item.setRegistryName(location(locationName));
         registry.register(item);
     }
 
-    public static void register(Item item, IForgeRegistry<Item> registry, ResourceLocation location) {
+    private static void register(Item item, IForgeRegistry<Item> registry, ResourceLocation location) {
         item.setRegistryName(location);
         registry.register(item);
     }
 
-    public static void register(HazelnutLogBlock block, IForgeRegistry<Block> registry, String locationName) {
+    private static void register(HazelnutLogBlock block, IForgeRegistry<Block> registry, String locationName) {
         block.setRegistryName(location(locationName));
         registry.register(block);
     }
 
-    public static void register(ItemBlock block, IForgeRegistry<Block> registry, String locationName) {
+    private static void register(ItemBlock block, IForgeRegistry<Block> registry, String locationName) {
         block.setRegistryName(location(locationName));
         registry.register(block);
     }
 
-    public static void register(LeavesBlock block, IForgeRegistry<Block> registry, String locationName) {
+    private static void register(LeavesBlock block, IForgeRegistry<Block> registry, String locationName) {
         block.setRegistryName(location(locationName));
         registry.register(block);
     }

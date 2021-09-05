@@ -1,10 +1,12 @@
-package de.domephant.bettertrees.client;
+package de.domephant.bettertrees;
 
+import de.domephant.bettertrees.client.init.ClientProxy;
+import de.domephant.bettertrees.client.init.CommonProxy;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,25 +19,22 @@ public class Main
     public static Main instance;
     public static final String MOD_ID = "bettertrees";
     public static final Logger LOGGER = LogManager.getLogger();
+    private static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
 
     public Main() {
+        FMLJavaModLoadingContext.get().getModEventBus().register(this);
+        proxy.construct();
         instance = this;
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-
-    }
-
-    private void setup(final FMLCommonSetupEvent event)
-    {
-
-    }
-
-    private void clientSetup(final FMLClientSetupEvent event) {
-
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-        // do something when the server starts
+    public void setup(final FMLCommonSetupEvent event) {
+        proxy.setup();
+    }
+
+    @SubscribeEvent
+    public void ready(final FMLLoadCompleteEvent event) {
+        proxy.complete();
     }
 }

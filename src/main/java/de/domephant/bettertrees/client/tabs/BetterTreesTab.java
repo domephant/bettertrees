@@ -1,6 +1,6 @@
 package de.domephant.bettertrees.client.tabs;
 
-import de.domephant.bettertrees.client.Main;
+import de.domephant.bettertrees.Main;
 import de.domephant.bettertrees.client.events.RegistryEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
