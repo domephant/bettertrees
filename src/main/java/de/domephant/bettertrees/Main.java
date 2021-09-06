@@ -21,7 +21,6 @@ public class Main
     public static final Logger LOGGER = LogManager.getLogger();
     private static CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
-
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         proxy.construct();

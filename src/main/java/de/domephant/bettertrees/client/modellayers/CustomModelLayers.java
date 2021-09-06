@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public class CustomModelLayers {
 
     public static final ModelLayerLocation WHALEENTITY = register("whale");
+    public static final ModelLayerLocation SQUIRRELENTITY = register("squirrel");
 
     private static ModelLayerLocation register(String p_171294_) {
         return register(p_171294_, "main");

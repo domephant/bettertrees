@@ -2,6 +2,8 @@ package de.domephant.bettertrees.client.events;
 
 import de.domephant.bettertrees.Main;
 
+import de.domephant.bettertrees.client.entity.model.SquirrelEntityModel;
+import de.domephant.bettertrees.client.entity.render.SquirrelEntityRenderer;
 import de.domephant.bettertrees.client.entity.render.WhaleEntityRenderer;
 import de.domephant.bettertrees.client.entity.model.WhaleEntityModel;
 import de.domephant.bettertrees.client.modellayers.CustomModelLayers;
@@ -11,6 +13,7 @@ import de.domephant.bettertrees.client.world.blocks.ItemBlock;
 import de.domephant.bettertrees.client.tabs.BetterTreesTab;
 import de.domephant.bettertrees.client.world.item.LeavesItem;
 import de.domephant.bettertrees.client.world.item.NutcrackerItem;
+import de.domephant.bettertrees.common.entity.SquirrelEntity;
 import de.domephant.bettertrees.common.entity.WhaleEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,6 +66,7 @@ public class RegistryEvents {
 
     //#region Entities
     public static final EntityType<WhaleEntity> WHALEENTITY = EntityType.Builder.of(WhaleEntity::new, MobCategory.WATER_CREATURE).sized(0.6F, 1.95F).build("bettertrees.whale");
+    public static final EntityType<SquirrelEntity> SQUIRRELENTITY = EntityType.Builder.of(SquirrelEntity::new, MobCategory.CREATURE).sized(0.6F, 1.95F).build("bettertrees.squirrel");
     //endregion
 
     @SubscribeEvent
@@ -88,22 +92,25 @@ public class RegistryEvents {
     @SubscribeEvent
     public static void registerEntity(RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(WHALEENTITY.setRegistryName("whale"));
+        event.getRegistry().register(SQUIRRELENTITY.setRegistryName("squirrel"));
     }
 
     @SubscribeEvent
     public static void registerEntityAttribute(EntityAttributeCreationEvent event) {
         event.put(WHALEENTITY, WhaleEntity.createAttributes().build());
+        event.put(SQUIRRELENTITY, SquirrelEntity.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(RegistryEvents.WHALEENTITY, WhaleEntityRenderer::new);
+        event.registerEntityRenderer(RegistryEvents.SQUIRRELENTITY, SquirrelEntityRenderer::new);
     }
     @SubscribeEvent
     public static void registerLayerDefinition(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CustomModelLayers.WHALEENTITY, WhaleEntityModel::createBodyLayer);
+        event.registerLayerDefinition(CustomModelLayers.SQUIRRELENTITY, SquirrelEntityModel::createBodyLayer);
     }
-
 
 
     private static void register(Item item, IForgeRegistry<Item> registry, String locationName) {
